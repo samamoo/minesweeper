@@ -1,0 +1,9 @@
+.timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.faClock {
+  color: gold;
+  margin-right: 5px;
+}
