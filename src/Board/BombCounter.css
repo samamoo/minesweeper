@@ -1,0 +1,9 @@
+.counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.faFlag {
+  color: red;
+  margin-right: 5px;
+}
