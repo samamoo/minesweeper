@@ -31,7 +31,6 @@ const makeGrid = (rows, cols) => {
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
-      //  first row
       // If the cell is a bomb, skip
       if (arr[row][col].value === "bomb") {
         console.log("Continue")
@@ -42,12 +41,44 @@ const makeGrid = (rows, cols) => {
         arr[row][col].value++;
       }
       // Cell above and to the right of the bomb
-      if (row > 0 && col < cols -1 && arr[row-1][col+1].value === "bomb") {
+      if (row > 0 && col < cols-1 && arr[row-1][col+1].value === "bomb") {
         arr[row][col].value++;
       }
-
+      // Cell above and to the left of the bomb
+      if (row > 0 && col > 0 && arr[row-1][col-1].value === "bomb") {
+        arr[row][col].value++;
+      }
+      // Cell to the right is a bomb
+      if (col < cols-1 && arr[row][col+1].value === "bomb") {
+        arr[row][col].value++;
+      }
+      // Cell to the left is a bomb
+      if (col > 0 && arr[row][col-1].value === "bomb") {
+        arr[row][col].value++;
+      }
+      // Cell below is a bomb
+      if (row < rows-1 && arr[row+1][col].value === "bomb") {
+        arr[row][col].value++;
+      }
+      // Cell below and to the right is bomb
+      if (row < rows-1 && col < cols-1 && arr[row+1][col+1].value === "bomb") {
+        arr[row][col].value++;
+      }
+      // Cell below and to the left is a bomb
+      if (row < rows-1 && col > 0 && arr[row+1][col-1].value === "bomb") {
+        arr[row][col].value++
+      }
     }
   }
+  console.log(arr)
+  return arr;
+}
+
+export { makeGrid }
+
+  // Not checking row === 0 because as long as the row < rows-1, you will always be able to check the row+1 / the row below it.
+  // Must check if col > 0 so that you are able to check the tile on the left
+
   // Need to change the values of cells that surround a bomb
   // Loop through board arrays to find location of "bomb"s
   // Check if surrounding tiles are bombs, else increase the value.
@@ -57,11 +88,6 @@ const makeGrid = (rows, cols) => {
   // if [x] === 0, only check current row and [x+1]
   // if [x] === rows-1, only check current row and [x-1]
 
-  console.log(arr)
-  return arr;
-}
-
-export { makeGrid }
 
 // The game board
 // [

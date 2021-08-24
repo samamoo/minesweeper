@@ -14,11 +14,11 @@ export default function Board() {
   const [ board, setBoard ] = useState([]); 
 
   // Start the timer on page load
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((prev) => prev +1)
-    }, 1000);
-  },[]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTime((prev) => prev +1)
+  //   }, 1000);
+  // },[]);
 
   // Create a new board on page load
   useEffect(() => {
@@ -47,7 +47,6 @@ export default function Board() {
       </header>
 
       <div className="board-container">
-        {/* Generate Cells */}
         {board.map((val, key) => {
           return(
             val.map((value, key) => {
