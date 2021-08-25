@@ -1,6 +1,12 @@
 .cell {
   width: 30px;
   height: 30px;
-  background-color:hotpink;
+  background-color: darksalmon;
   border: solid black;
+}
+.cell--selected {
+  background-color: greenyellow;
+}
+.cell--flagged {
+  background-color: red;
 }
