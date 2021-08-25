@@ -12,7 +12,7 @@ export default function Board() {
   const [ time, setTime ] = useState(0);
   const [ flagCount, setFlagCount ] = useState(40);
   const [ board, setBoard ] = useState([]); 
-  const [gameOver, setGameOver] = useState(false);
+  const [ gameOver, setGameOver ] = useState(false);
 
   // Start the timer on page load
   let timer = useRef(null);
@@ -40,7 +40,13 @@ export default function Board() {
     setBoard(grid);
   }
 
-  console.log(gameOver);
+  const resetBoard = () => {
+    generateBoard();
+    setGameOver(false);
+    setTime(0);
+    setFlagCount(40);
+  }
+
   // Select a Cell / On Left Click
   const selectCell = (data) => {
     if (data.value === "bomb") {
@@ -90,6 +96,7 @@ export default function Board() {
     <div className="board">
       <header className="board-header">
         <FlagCounter flagCount={flagCount}/>
+        <button className="new-game-button" type="button" onClick={() => resetBoard()}>New Game</button>
         <Timer time={time}/>
         {/* Level Selection Component */}
         {/* Settings Component */}
@@ -106,6 +113,7 @@ export default function Board() {
                 flagged={value.flagged}
                 x={value.x}
                 y={value.y}
+                gameOver={gameOver}
                 selectCell={selectCell}
                 flagCell={flagCell}
                 />
