@@ -1,12 +1,29 @@
 .cell {
   width: 30px;
   height: 30px;
-  background-color: darksalmon;
-  border: solid black;
+  background-color: #76B041;
+  border-right: 0.5px solid #19323C;
+  border-bottom: 0.5px solid #19323C;
+  border-top: 0.5px solid #D6D9CE;
+  border-left: 0.5px solid #D6D9CE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  color: #19323C;
+  font-weight: bold;
+}
+.cell > div:nth-child(odd) {
+  background-color: yellow;
 }
 .cell--selected {
-  background-color: greenyellow;
+  background-color: #D6D9CE;
 }
 .cell--flagged {
-  background-color: red;
+  /* background-color: pink; */
+  color: red;
+}
+.cell--bomb {
+  background-color: #D6D9CE;
+  color: #540804;
 }
