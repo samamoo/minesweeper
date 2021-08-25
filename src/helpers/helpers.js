@@ -74,40 +74,36 @@ const makeGrid = (rows, cols) => {
 }
 
 const checkEmpties = (board, x, y) => {
-  // Given the coordinates of the selected cell
-  // Check surrounding cells of that coordinate
   let rows = board.length;
   let cols = board[0].length;
   for (let i = 0; i < rows; i++) {
     for (let k = 0; k < cols; k++) {
-      if (i > 0 && board[x-1][y].value === 0) {
+      if (x > 0) {
         board[x-1][y].selected = true;
       }
-      if (i > 0 && k < cols - 1 && board[x-1][y+1].value === 0) {
+      if (x > 0 && y < cols -1) {
         board[x-1][y+1].selected = true;
       }
-      if (i > 0 && k > 0 && board[x-1][y-1].value === 0) {
+      if (x > 0 && y > 0) {
         board[x-1][y-1].selected = true;
       }
-      if (k < cols - 1 && board[x][y+1].value === 0) {
-        board[x][y+1].selected = true;
-      }
-      if (k > 0 && board[x][y-1].value === 0) {
-        board[x][y-1].selected = true;
-      }
-      if (i < rows - 1 && board[x+1][y].value === 0) {
+      if (x < rows -1 ) {
         board[x+1][y].selected = true;
       }
-      if (i < rows - 1 && k < cols - 1 && board[x+1][y+1].value === 0) {
+      if (x < rows -1 && y < cols -1) {
         board[x+1][y+1].selected = true;
       }
-      if (i < rows - 1 && k > 0 && board[x+1][y-1].value === 0) {
+      if (x < rows -1 && y > 0)  {
         board[x+1][y-1].selected = true;
       }
-      // working except when you click the first and last row and first and last column...
+      if (y > 0) {
+        board[x][y-1].selected = true;
+      }
+      if (y < cols-1) {
+        board[x][y+1].selected = true;
+      }
     }
   }
-  console.log(board)
   return board;
 }
 
