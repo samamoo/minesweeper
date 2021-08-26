@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Modal from 'react-modal';
 // Components
 import FlagCounter from './FlagCounter';
 import Timer from './Timer';
 import Cell from './Cell';
 import LevelSelector from './LevelSelector';
+import GameOverModal from './GameOverModal';
 // Helpers
 import { makeGrid, checkEmpties, checkWin } from '../helpers/helpers';
 // Styles
 import './index.css';
+Modal.setAppElement('div');
 
 export default function Board() {
   const [ startTimer, setStartTimer ] = useState(false);
@@ -16,7 +19,15 @@ export default function Board() {
   const [ board, setBoard ] = useState([]); 
   const [ gameOver, setGameOver ] = useState(false);
   const [ level, setLevel ] = useState("med");
+  const [ loseModal, setLoseModal ] = useState(false);
   let timer = useRef(null);
+
+  const openLoseModal = () => {
+    setLoseModal(true);
+  }
+  const closeLoseModal = () => {
+    setLoseModal(false);
+  }
 
   // Create a new board on page load
   useEffect(() => {
@@ -52,6 +63,7 @@ export default function Board() {
     setTime(0);
     setStartTimer(false);
     stopClock();
+    closeLoseModal();
   }
 
   // Select a Cell / On Left Click
@@ -64,7 +76,7 @@ export default function Board() {
       console.log("GAME OVER");
       setGameOver(true);
       stopClock();
-      // Trigger LOSE popup 
+      setLoseModal(true);
     }
     let updateState = board;
     if (updateState[data.x][data.y].flagged === true) {
@@ -134,6 +146,10 @@ export default function Board() {
         <Timer time={time}/>
         <button className="new-game-button" type="button" onClick={() => resetBoard(level)}>New Game</button>
       </header>
+
+      <Modal className="game-over-modal" overlayClassName="modal-overlay" isOpen={loseModal} onRequestClose={() => setLoseModal(false)}>
+        <GameOverModal closeLoseModal={closeLoseModal} resetBoard={resetBoard} level={level}/>
+      </Modal>
 
       <div className="board-container">
         {board.map((val, key) => {
