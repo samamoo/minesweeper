@@ -10,8 +10,13 @@
 
 .app-header {
   font-family: 'Righteous', cursive;
+}
+.app-header h1 {
   font-size: 45px;
   color: #540804;
+}
+.app-header h2 {
+  color: brown;
 }
 .poop-icon {
   color: brown;

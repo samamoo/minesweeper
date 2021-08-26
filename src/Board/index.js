@@ -22,6 +22,7 @@ export default function Board() {
   const [ loseModal, setLoseModal ] = useState(false);
   let timer = useRef(null);
 
+  // Open/Close GameOver modal
   const openLoseModal = () => {
     setLoseModal(true);
   }

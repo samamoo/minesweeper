@@ -12,6 +12,9 @@
   color: brown;
   margin: 10px;
 }
+.game-over h4 {
+  color: #540804;
+}
 .game-buttons {
   width: 100%;
   display: flex;

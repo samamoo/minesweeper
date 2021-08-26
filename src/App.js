@@ -8,7 +8,10 @@ library.add(faPoop, faBroom);
 function App() {
   return (
     <div className="App">
-      <header className="app-header">WELCOME TO TURDSWEEPER</header>
+      <header className="app-header">
+        <h1>WELCOME TO TURDSWEEPER</h1>
+        <h2>DON'T STEP IN THE DOO-DOO!</h2>
+      </header>
       <div className="app-icons">
         <FontAwesomeIcon className="poop-icon" size="4x" icon={faPoop}/>
         <FontAwesomeIcon className="broom-icon" size="4x" icon={faBroom}/>
