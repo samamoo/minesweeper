@@ -106,17 +106,22 @@ const checkEmpties = (board, x, y) => {
   return board;
 }
 
-const checkWin = (board) => {
+const checkWin = (board, bombs) => {
   let rows = board.length;
   let cols = board[0].length;
+  let toWin = (rows*cols)-bombs;
+  let selectedCount = 0;
   for (let x = 0; x < rows; x++) {
     for (let y = 0; y < cols; y++) {
-      if (board[x][y].selected !== true) {
-        return false;
+      if (board[x][y].selected === true && board[x][y].value !== "bomb") {
+        selectedCount++;
       }
     }
   }
-  return true;
+  if (selectedCount === toWin) {
+    return true;
+  }
+  return false;
 }
 
 export { makeGrid, checkEmpties, checkWin }
