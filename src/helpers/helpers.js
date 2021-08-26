@@ -1,5 +1,5 @@
 // Build a board with set rows and columns
-const makeGrid = (rows, cols) => {
+const makeGrid = (rows, cols, bombs) => {
   let arr = [];
   let bombLocations = [];
   let bombCount = 0;
@@ -19,7 +19,7 @@ const makeGrid = (rows, cols) => {
     arr.push(subArr);
   }
   // Generate & save random xy coordinates for the 40 bombs
-  while (bombCount < 40) {
+  while (bombCount < bombs) {
     let x = Math.floor(Math.random()*rows);
     let y = Math.floor(Math.random()*cols);
     if (arr[x][y].value === 0) {
@@ -69,7 +69,6 @@ const makeGrid = (rows, cols) => {
       }
     }
   }
-  console.log(arr)
   return arr;
 }
 
@@ -107,7 +106,20 @@ const checkEmpties = (board, x, y) => {
   return board;
 }
 
-export { makeGrid, checkEmpties }
+const checkWin = (board) => {
+  let rows = board.length;
+  let cols = board[0].length;
+  for (let x = 0; x < rows; x++) {
+    for (let y = 0; y < cols; y++) {
+      if (board[x][y].selected !== true) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+export { makeGrid, checkEmpties, checkWin }
 
   // Not checking row === 0 because as long as the row < rows-1, you will always be able to check the row+1 / the row below it.
   // Must check if col > 0 so that you are able to check the tile on the left
