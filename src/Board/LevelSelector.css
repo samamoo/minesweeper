@@ -1,0 +1,9 @@
+#level {
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  color: #19323C;
+}
+select {
+  outline: none;
+}
