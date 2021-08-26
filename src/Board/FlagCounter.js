@@ -9,7 +9,7 @@ export default function FlagCounter(props) {
   return(
     <div className="counter">
       <FontAwesomeIcon className="faFlag" size="1x" icon={faFlag}/>
-        <p><strong>{props.flagCount}</strong></p>
+      <p><strong>{props.flagCount}</strong></p>
     </div>
   )
 }
