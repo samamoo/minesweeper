@@ -41,7 +41,6 @@ export default function Board() {
 
   // Reset the board and all state
   const resetBoard = (level) => {
-    console.log(level)
     if (level === "med") {
       generateBoard(16, 16, 40);
       setFlagCount(40);
