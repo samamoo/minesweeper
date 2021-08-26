@@ -1,16 +1,19 @@
 .cell {
-  width: 30px;
-  height: 30px;
   background-color: #76B041;
-  border: 0.5px solid green;
+  border: 0.5px solid #58882a;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #19323C;
   font-weight: bold;
 }
-.cell > div:nth-child(odd) {
-  background-color: yellow;
+.cell--med {
+  width: 30px;
+  height: 30px;
+}
+.cell--easy {
+  width: 48px;
+  height: 48px;
 }
 .cell--selected {
   background-color: #D6D9CE;
@@ -20,5 +23,5 @@
 }
 .cell--bomb {
   background-color: #D6D9CE;
-  color: #540804;
+  color: brown;
 }
