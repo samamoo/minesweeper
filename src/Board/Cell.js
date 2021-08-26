@@ -12,14 +12,13 @@ export default function Cell(props) {
     "cell--easy": props.level === "easy",
     "cell--med": props.level === "med",
     "cell--selected": props.selected,
-    "cell--flagged": props.flagged,
+    "cell--flagged": props.flagged && !props.gameOver &&
+    !props.selected,
     "cell--bomb":  props.value === "bomb" && props.gameOver,
   });
 
 
   return(
-    // If the level is med, leave it
-    // If the level is easy, change cell size
     <div className={cellClass} selected={props.selected} flagged={props.flagged} 
     onClick={() => props.selectCell(props)}
     onContextMenu={(e)=> props.flagCell(e, props)}>
@@ -29,6 +28,7 @@ export default function Cell(props) {
       }
       {props.flagged && 
       !props.gameOver &&
+      !props.selected &&
       <FontAwesomeIcon size="lg" icon={faFlag}/>
       }
       {props.selected && 

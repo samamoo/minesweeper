@@ -16,12 +16,12 @@
   height: 48px;
 }
 .cell--selected {
-  background-color: #D6D9CE;
+  background-color: whitesmoke;
 }
 .cell--flagged {
   color: red;
 }
 .cell--bomb {
-  background-color: #D6D9CE;
+  background-color: whitesmoke;
   color: brown;
 }
