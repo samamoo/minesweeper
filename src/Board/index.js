@@ -3,37 +3,35 @@ import React, { useState, useEffect, useRef } from 'react';
 import FlagCounter from './FlagCounter';
 import Timer from './Timer';
 import Cell from './Cell';
+import LevelSelector from './LevelSelector';
 // Helpers
 import { makeGrid, checkEmpties, checkWin } from '../helpers/helpers';
 // Styles
 import './index.css';
 
 export default function Board() {
+  const [ startTimer, setStartTimer ] = useState(false);
   const [ time, setTime ] = useState(0);
   const [ flagCount, setFlagCount ] = useState(40);
   const [ board, setBoard ] = useState([]); 
   const [ gameOver, setGameOver ] = useState(false);
   const [ level, setLevel ] = useState("med");
-
-  // Start the timer on page load
   let timer = useRef(null);
-  useEffect(() => {
-    if (!gameOver) {
-      startTimer();
-    }
-    return () => clearInterval(timer.current);
-  },[gameOver]);
-
-  const startTimer = () => {
-    timer.current = setInterval(() => {
-      setTime((prev) => prev +1)
-    }, 1000); 
-  }
 
   // Create a new board on page load
   useEffect(() => {
     generateBoard(16, 16, 40);
   },[]);
+
+  // Start the clock
+  const clockBegin = () => {
+    timer.current = setInterval(() => {
+      setTime((prev) => prev +1)
+    }, 1000); 
+  }
+  const stopClock = () => {
+    clearInterval(timer.current);
+  }
 
   // Create the board and set state of the board
   const generateBoard = (rows, cols, bombs) => {
@@ -41,19 +39,33 @@ export default function Board() {
     setBoard(grid);
   }
 
-  const resetBoard = () => {
-    generateBoard(16, 16, 40);
+  // Reset the board and all state
+  const resetBoard = (level) => {
+    console.log(level)
+    if (level === "med") {
+      generateBoard(16, 16, 40);
+      setFlagCount(40);
+    } else if (level === "easy") {
+      generateBoard(10, 10, 15);
+      setFlagCount(15);
+    }
     setGameOver(false);
     setTime(0);
-    setFlagCount(40);
+    setStartTimer(false);
+    stopClock();
   }
 
   // Select a Cell / On Left Click
   const selectCell = (data) => {
+    if (!startTimer) {
+      setStartTimer(true);
+      clockBegin();
+    }
     if (data.value === "bomb") {
-      console.log("GAME OVER")
+      console.log("GAME OVER");
       setGameOver(true);
-      // Trigger popup 
+      stopClock();
+      // Trigger LOSE popup 
     }
     let updateState = board;
     if (updateState[data.x][data.y].flagged === true) {
@@ -64,14 +76,19 @@ export default function Board() {
       const newBoard = checkEmpties(board, data.x, data.y);
       updateState = newBoard;
     }
-    // If all cells that are NOT bombs are revealed, the game is won
-    //  (rows*cols)-bombs = num of tiles that must be selected
-
     updateState[data.x][data.y].selected = true;
     setBoard(updateState);
-    if (checkWin(updateState)) {
+    if (data.level === "easy" && checkWin(updateState, 15)) {
+      // Trigger WIN modal
       console.log("WINNER WINNER CHICKEN DINNER")
+      stopClock();
     }
+    if (data.level === "med" && checkWin(updateState, 40)) {
+      // Trigger WIN modal
+      console.log("WINNER WINNER CHICKEN DINNER")
+      stopClock();
+    }
+
   }
   
   // Flag a Cell / On Right Click
@@ -88,22 +105,22 @@ export default function Board() {
     setBoard(updateState)
   }
 
+  // Select level/difficulty
   const selectLevel = (e) => {
-    console.log(e.target.value)
     if (e.target.value === "easy") {
-      setTime(0);
       setLevel("easy");
       setFlagCount(15);
       generateBoard( 10, 10, 15);
     }
     if (e.target.value === "med") {
-      setTime(0);
       setLevel("med");
       setFlagCount(40);
       generateBoard(16, 16, 40);
     }
+    resetBoard(e.target.value);
   }
 
+  // If the board is not loaded, display Loading...
   if (!board) {
     return(
       <div>LOADING...</div>
@@ -113,20 +130,10 @@ export default function Board() {
   return( board &&
     <div className="board">
       <header className="board-header">
-        <form>
-          <select name="level" id="level" onChange={(e) => selectLevel(e)}>
-            <option value="easy">Easy</option>
-            <option value="med" selected="selected">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-        </form>
-
-        
+        <LevelSelector selectLevel={selectLevel}/>
         <FlagCounter flagCount={flagCount}/>
         <Timer time={time}/>
-        <button className="new-game-button" type="button" onClick={() => resetBoard()}>New Game</button>
-        {/* Level Selection Component */}
-        {/* Settings Component */}
+        <button className="new-game-button" type="button" onClick={() => resetBoard(level)}>New Game</button>
       </header>
 
       <div className="board-container">
