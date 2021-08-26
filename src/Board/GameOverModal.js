@@ -2,7 +2,6 @@ import React from 'react';
 import './GameOverModal.css';
 
 export default function GameOverModal(props) {
-  console.log(props)
   return(
     <div className="game-over">
       <div className="game-over-message">
