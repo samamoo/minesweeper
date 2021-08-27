@@ -6,8 +6,9 @@ import Timer from './Timer';
 import Cell from './Cell';
 import LevelSelector from './LevelSelector';
 import GameOverModal from './GameOverModal';
+import GameWinModal from './GameWinModal';
 // Helpers
-import { makeGrid, checkEmpties, checkWin } from '../helpers/helpers';
+import { makeGrid, checkWin, checkBlanks } from '../helpers/helpers';
 // Styles
 import './index.css';
 Modal.setAppElement('div');
@@ -20,6 +21,7 @@ export default function Board() {
   const [ gameOver, setGameOver ] = useState(false);
   const [ level, setLevel ] = useState("med");
   const [ loseModal, setLoseModal ] = useState(false);
+  const [ winModal, setWinModal ] = useState(false);
   let timer = useRef(null);
 
   // Open/Close GameOver modal
@@ -28,6 +30,12 @@ export default function Board() {
   }
   const closeLoseModal = () => {
     setLoseModal(false);
+  }
+  const openWinModal = () => {
+    setWinModal(true);
+  }
+  const closeWinModal = () => {
+    setWinModal(false);
   }
 
   // Create a new board on page load
@@ -85,8 +93,8 @@ export default function Board() {
       setFlagCount(flagCount+1)
     }
     if (updateState[data.x][data.y].value === 0) {
-      const newBoard = checkEmpties(board, data.x, data.y);
-      updateState = newBoard;
+      const newBoard = checkBlanks(board, data.x, data.y);
+      updateState = newBoard.board;
     }
     updateState[data.x][data.y].selected = true;
     setBoard(updateState);
@@ -94,11 +102,13 @@ export default function Board() {
       // Trigger WIN modal
       console.log("WINNER WINNER CHICKEN DINNER")
       stopClock();
+      openWinModal();
     }
     if (data.level === "med" && checkWin(updateState, 40)) {
       // Trigger WIN modal
       console.log("WINNER WINNER CHICKEN DINNER")
       stopClock();
+      openWinModal();
     }
 
   }
@@ -150,6 +160,9 @@ export default function Board() {
 
       <Modal className="game-over-modal" overlayClassName="modal-overlay" isOpen={loseModal} onRequestClose={() => setLoseModal(false)}>
         <GameOverModal closeLoseModal={closeLoseModal} resetBoard={resetBoard} level={level}/>
+      </Modal>
+      <Modal className="game-over-modal" overlayClassName="modal-overlay" isOpen={winModal} onRequestClose={() => setWinModal(false)}>
+        <GameWinModal closeWinModal={closeWinModal} resetBoard={resetBoard} level={level} time={time}/>
       </Modal>
 
       <div className="board-container">

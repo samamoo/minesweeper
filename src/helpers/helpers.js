@@ -72,38 +72,138 @@ const makeGrid = (rows, cols, bombs) => {
   return arr;
 }
 
-const checkEmpties = (board, x, y) => {
-  let rows = board.length;
-  let cols = board[0].length;
-  for (let i = 0; i < rows; i++) {
-    for (let k = 0; k < cols; k++) {
-      if (x > 0) {
-        board[x-1][y].selected = true;
-      }
-      if (x > 0 && y < cols -1) {
-        board[x-1][y+1].selected = true;
-      }
-      if (x > 0 && y > 0) {
-        board[x-1][y-1].selected = true;
-      }
-      if (x < rows -1 ) {
-        board[x+1][y].selected = true;
-      }
-      if (x < rows -1 && y < cols -1) {
-        board[x+1][y+1].selected = true;
-      }
-      if (x < rows -1 && y > 0)  {
-        board[x+1][y-1].selected = true;
-      }
-      if (y > 0) {
-        board[x][y-1].selected = true;
-      }
-      if (y < cols-1) {
-        board[x][y+1].selected = true;
-      }
-    }
+const checkBlanks = (board, x, y, newNonMinesCount) => {
+  if (board[x][y].selected) {
+    return board;
   }
-  return board;
+
+  let flipped = [];
+  flipped.push(board[x][y]);
+  while (flipped.length !== 0) {
+    let single = flipped.pop();
+    if (!single.selected) {
+      newNonMinesCount--;
+      single.selected = true;
+    }
+    if (single.value !== 0) {
+      break;
+    }
+    // Top Left
+    if (single.x > 0 && single.y > 0 &&
+      board[single.x-1][single.y-1].value === 0 &&
+      !board[single.x-1][single.y-1].selected) 
+      {
+        flipped.push(board[single.x-1][single.y-1]);
+      }
+      // Top Right
+    if (single.x < board.length-1 &&
+      single.y < board[0].length-1 &&
+      board[single.x+1][single.y+1].value === 0 &&
+      !board[single.x+1][single.y+1].selected) 
+      {
+        flipped.push(board[single.x+1][single.y+1])
+      }
+      // Bottom Left
+    if (single.x < board.length -1 &&
+      single.y > 0 &&
+      board[single.x+1][single.y-1].value === 0 && 
+      !board[single.x+1][single.y-1].selected)
+      {
+        flipped.push(board[single.x+1][single.y-1])
+      }
+      // Bottom Right
+    if (single.x > 0 &&
+      single.y < board[0].length-1 &&
+      board[single.x-1][single.y+1].value === 0 &&
+      !board[single.x-1][single.y+1].selected)
+      {
+        flipped.push(board[single.x-1][single.y+1])
+      }
+      // Top
+    if (single.x > 0 &&
+      board[single.x-1][single.y].value === 0 &&
+      !board[single.x-1][single.y].selected) 
+      {
+        flipped.push(board[single.x-1][single.y])
+      } 
+      // Bottom
+    if (single.x < board.length-1 &&
+      board[single.x+1][single.y].value === 0 &&
+      !board[single.x+1][single.y].selected) 
+      {
+        flipped.push(board[single.x+1][single.y])
+      }
+      // Right
+    if (single.y < board[0].length-1 &&
+      board[single.x][single.y+1].value === 0 &&
+      !board[single.x][single.y+1].selected) 
+      {
+        flipped.push(board[single.x][single.y+1])
+      }
+      // Left
+    if (single.y > 0 &&
+      board[single.x][single.y-1].value === 0 &&
+      !board[single.x][single.y-1].selected) 
+      {
+        flipped.push(board[single.x][single.y-1])
+      }
+    
+      // Reveal
+      // Top Left
+    if (single.x > 0 &&
+      single.y > 0 &&
+      !board[single.x-1][single.y-1].selected)
+      {
+        board[single.x-1][single.y-1].selected = true;
+        newNonMinesCount--;
+      }
+      // Top
+    if (single.x > 0 &&
+      !board[single.x-1][single.y].selected) {
+        board[single.x-1][single.y].selected = true;
+        newNonMinesCount--;
+      }
+      // Top Right
+    if (single.x > 0 &&
+      single.y < board[0].length-1 &&
+      !board[single.x-1][single.y+1].selected) {
+        board[single.x-1][single.y+1].selected = true;
+        newNonMinesCount--;
+      }
+      // Left
+    if (single.y > 0 &&
+      !board[single.x][single.y-1].selected) {
+        board[single.x][single.y-1].selected = true;
+        newNonMinesCount--;
+      }
+      // Right
+    if (single.y < board[0].length-1 &&
+      !board[single.x][single.y+1].selected) {
+        board[single.x][single.y+1].selected = true;
+        newNonMinesCount--;
+      }
+      // Bottom Left
+    if (single.x < board.length-1 &&
+      single.y > 0 &&
+      !board[single.x+1][single.y-1].selected) {
+        board[single.x+1][single.y-1].selected = true;
+        newNonMinesCount--;
+      }
+      // Bottom
+    if (single.x < board.length-1 &&
+      !board[single.x+1][single.y].selected) {
+        board[single.x+1][single.y].selected = true;
+        newNonMinesCount--;
+    }
+      // Bottom Right
+    if (single.x < board.length-1 &&
+      single.y < board[0].length-1 &&
+      !board[single.x+1][single.y+1].selected) {
+        board[single.x+1][single.y+1].selected = true;
+        newNonMinesCount--;
+      }
+  }
+  return { board, newNonMinesCount}
 }
 
 const checkWin = (board, bombs) => {
@@ -124,20 +224,7 @@ const checkWin = (board, bombs) => {
   return false;
 }
 
-export { makeGrid, checkEmpties, checkWin }
-
-  // Not checking row === 0 because as long as the row < rows-1, you will always be able to check the row+1 / the row below it.
-  // Must check if col > 0 so that you are able to check the tile on the left
-
-  // Need to change the values of cells that surround a bomb
-  // Loop through board arrays to find location of "bomb"s
-  // Check if surrounding tiles are bombs, else increase the value.
-  // [x-1][y-1].value++ / [x-1][y].value++ / [x-1][y+1].value++
-  // [x][y+1].value++ / [x][y-1].value++
-  // [x+1][y-1].value++ / [x+1][y].value++ / [x+1][y+1].value++
-  // if [x] === 0, only check current row and [x+1]
-  // if [x] === rows-1, only check current row and [x-1]
-
+export { makeGrid, checkWin, checkBlanks }
 
 // The game board
 // [
