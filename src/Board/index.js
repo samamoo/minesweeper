@@ -77,7 +77,7 @@ export default function Board() {
       console.log("GAME OVER");
       setGameOver(true);
       stopClock();
-      setLoseModal(true);
+      openLoseModal();
     }
     let updateState = board;
     if (updateState[data.x][data.y].flagged === true) {
