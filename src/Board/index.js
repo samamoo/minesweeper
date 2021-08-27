@@ -99,18 +99,15 @@ export default function Board() {
     updateState[data.x][data.y].selected = true;
     setBoard(updateState);
     if (data.level === "easy" && checkWin(updateState, 15)) {
-      // Trigger WIN modal
       console.log("WINNER WINNER CHICKEN DINNER")
       stopClock();
       openWinModal();
     }
     if (data.level === "med" && checkWin(updateState, 40)) {
-      // Trigger WIN modal
       console.log("WINNER WINNER CHICKEN DINNER")
       stopClock();
       openWinModal();
     }
-
   }
   
   // Flag a Cell / On Right Click
