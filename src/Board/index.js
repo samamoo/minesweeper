@@ -73,6 +73,7 @@ export default function Board() {
     setStartTimer(false);
     stopClock();
     closeLoseModal();
+    closeWinModal();
   }
 
   // Select a Cell / On Left Click
@@ -113,7 +114,7 @@ export default function Board() {
   // Flag a Cell / On Right Click
   const flagCell = (e, data) => {
     e.preventDefault();
-    let updateState = board;
+    let updateState = JSON.parse(JSON.stringify(board));
     if (updateState[data.x][data.y].flagged === true) {
       updateState[data.x][data.y].flagged = false;
       setFlagCount(flagCount+1)
