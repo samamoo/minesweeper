@@ -5,6 +5,8 @@ You are walking an a field littered with poops left behind by irresponsible pet-
 Left-click to reveal a cell.
 Right-click to flag a poop.
 
+https://samamoo.github.io/minesweeper/
+
 ## Final Product
 
 !["On Page Load"](https://github.com/samamoo/minesweeper/blob/master/public/images/Screen%20Shot%202021-08-27%20at%2011.22.49%20AM.png?raw=true)
